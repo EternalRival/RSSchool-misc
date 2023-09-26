@@ -16,7 +16,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: resolve('src', 'index.html'),
-      favicon: resolve('src', 'assets', 'favicon.ico'),
+      favicon: resolve('src', 'assets', 'favicon.svg'),
       title: 'ER Some Project'
     }),
     new WebpackObfuscator(),

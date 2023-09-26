@@ -1,0 +1,19 @@
+.searchInput {
+  width: 100%;
+  max-width: 20em;
+  padding: 0.4em;
+
+  border: 0.2em solid var(--main-color);
+  border-radius: 0.4em;
+  outline: none;
+
+  &:focus {
+    box-shadow: 0 0 0.4em 0.2em #fff;
+  }
+  &:hover {
+    filter: brightness(1.2);
+  }
+  &:active {
+    filter: brightness(1);
+  }
+}

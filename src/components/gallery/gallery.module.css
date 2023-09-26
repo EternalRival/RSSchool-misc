@@ -1,0 +1,25 @@
+.gallery {
+  column-count: 5;
+}
+
+.imageWrapper {
+  overflow: clip;
+  margin-bottom: 1em;
+  box-shadow: 0 0 0.5em 0.25em var(--main-color);
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+  &:active {
+    filter: brightness(1);
+  }
+}
+
+.image {
+  display: block;
+  transition: 0.5s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}

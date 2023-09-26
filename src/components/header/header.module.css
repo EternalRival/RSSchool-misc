@@ -1,0 +1,9 @@
+.header {
+  display: flex;
+  gap: 1.2em;
+  justify-content: space-between;
+
+  padding: 1.2em;
+
+  box-shadow: 0 0 0.4em 0.4em var(--main-color);
+}

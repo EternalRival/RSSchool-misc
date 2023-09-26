@@ -1,0 +1,31 @@
+.fab {
+  position: fixed;
+  z-index: 5;
+  right: 1.5em;
+  bottom: 1.5em;
+
+  width: 3em;
+  height: 3em;
+
+  appearance: none;
+  background-color: var(--main-color);
+  background-image: url('./assets/color-fill.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 66%;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 0 0.6em 0.3em var(--main-color);
+
+  &::-webkit-color-swatch {
+    display: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(1.2);
+  }
+  &:active {
+    filter: brightness(1);
+  }
+}
