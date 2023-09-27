@@ -1,4 +1,4 @@
-import styles from './logo.module.css';
+import styles from './logo.module.scss';
 import { h } from '@helpers/h';
 import iconSrc from './assets/camera.svg';
 

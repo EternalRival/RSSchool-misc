@@ -1,4 +1,4 @@
-import '@assets/styles.css';
+import '@assets/styles.scss';
 import { createImagesCache, debounce } from '@helpers';
 import { createFAB, createLogo, createSearch, createHeader, createMain, createGallery, placeholder } from '@components';
 

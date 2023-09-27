@@ -1,4 +1,4 @@
-import styles from './gallery.module.css';
+import styles from './gallery.module.scss';
 import { h } from '@helpers';
 
 export const createImage = (props) => {
