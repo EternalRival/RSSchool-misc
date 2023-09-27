@@ -2,6 +2,7 @@ import '@assets/styles.scss';
 import { createImagesCache, debounce } from '@helpers';
 import { createFAB, createLogo, createSearch, createHeader, createMain, createGallery, placeholder } from '@components';
 
+/** @type {Record<string,HTMLElement>} */
 const elements = {
   fab: createFAB(),
   header: createHeader(),
@@ -49,7 +50,17 @@ const setupColors = (colorInput) => {
   colorInput.dispatchEvent(new InputEvent('input'));
 };
 
+/** @type {(button:HTMLElement,list:HTMLCollection)=>void} */
+const setupEasterEggRotate = (button, list) => {
+  button.onclick = () => {
+    Array.from(list).forEach((el) => {
+      el.classList.toggle('easter-egg-rotate');
+    });
+  };
+};
+
 render(document.body, elements);
 
 setupSearch(elements.gallery, elements.search);
 setupColors(elements.fab);
+setupEasterEggRotate(elements.logo, elements.gallery.children);
