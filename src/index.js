@@ -2,7 +2,6 @@ import '@assets/styles.scss';
 import { createImagesCache, debounce } from '@helpers';
 import { createFAB, createLogo, createSearch, createHeader, createMain, createGallery, placeholder } from '@components';
 
-/** @type {Record<string,HTMLElement>} */
 const elements = {
   fab: createFAB(),
   header: createHeader(),
@@ -20,47 +19,67 @@ const render = (root, elements) => {
   main.append(gallery);
 };
 
-const setupSearch = (galleryRoot, searchInput) => {
+const setupGallery = (galleryRoot) => {
   const getCachedImages = createImagesCache();
 
-  const handleInput = async ({ target: { value } }) => {
-    const query = value.trim();
-    const images = await getCachedImages(query);
+  const handlePopState = async () => {
+    const url = new URL(location.href);
+    const query = url.searchParams.get('query') ?? '';
+    const images = await getCachedImages(query.trim());
+
     const listToRender = images.length > 0 ? images : [placeholder(`No content for query "${query}" found :(`)];
     galleryRoot.replaceChildren(...listToRender);
   };
+
+  addEventListener('popstate', handlePopState);
+  dispatchEvent(new PopStateEvent('popstate'));
+};
+
+const setupSearch = (searchInput) => {
+  const handleInput = ({ target: { value } }) => {
+    const query = value.trim();
+    const url = new URL(location.href);
+
+    if (query) {
+      url.searchParams.set('query', query);
+    } else {
+      url.searchParams.delete('query');
+    }
+
+    history.pushState(null, null, url);
+    dispatchEvent(new PopStateEvent('popstate'));
+  };
   const handleInputDebounced = debounce(handleInput, 1000);
 
+  searchInput.value = new URLSearchParams(location.search).get('query');
   searchInput.addEventListener('input', handleInputDebounced);
-  searchInput.dispatchEvent(new InputEvent('input'));
   searchInput.focus();
 };
 
 const setupColors = (colorInput) => {
   const colorKey = '[ER]ImageGalleryMainColor';
 
-  colorInput.oninput = ({ target: { value } }) => {
-    document.body.style.setProperty('--main-color', value);
-  };
-  window.addEventListener('beforeunload', () => {
-    localStorage[colorKey] = colorInput.value;
-  });
+  const handleInput = ({ target: { value } }) => document.body.style.setProperty('--main-color', value);
 
   colorInput.value = localStorage[colorKey] ?? '#ffa500';
+  colorInput.addEventListener('input', handleInput);
   colorInput.dispatchEvent(new InputEvent('input'));
+
+  const handleBeforeUnload = () => (localStorage[colorKey] = colorInput.value);
+
+  addEventListener('beforeunload', handleBeforeUnload);
 };
 
-/** @type {(button:HTMLElement,list:HTMLCollection)=>void} */
 const setupEasterEggRotate = (button, list) => {
-  button.onclick = () => {
-    Array.from(list).forEach((el) => {
-      el.classList.toggle('easter-egg-rotate');
-    });
-  };
+  const toggleRotate = (el) => el.classList.toggle('easter-egg-rotate');
+  button.addEventListener('click', () => Array.from(list).forEach(toggleRotate));
 };
 
-render(document.body, elements);
+addEventListener('DOMContentLoaded', () => {
+  render(document.body, elements);
 
-setupSearch(elements.gallery, elements.search);
-setupColors(elements.fab);
-setupEasterEggRotate(elements.logo, elements.gallery.children);
+  setupSearch(elements.search);
+  setupGallery(elements.gallery);
+  setupColors(elements.fab);
+  setupEasterEggRotate(elements.logo, elements.gallery.children);
+});
